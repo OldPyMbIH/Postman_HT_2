@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "a1a9d220-772f-42ac-a508-fe24210606da",
+		"name": "postman_HT_2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user_info_3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function (){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"var resp = pm.response.json();\r",
+							"var req = request.data;\r",
+							"pm.test(\"name,age,salary matches response\", function (){\r",
+							"    pm.expect(resp.salary.toString()).to.include(1000);\r",
+							"    pm.expect(resp.name).to.include(\"Anton\");\r",
+							"    pm.expect(resp.age).to.include(24);\r",
+							"})\r",
+							"pm.test(\"name,age,salary matches request\", function (){\r",
+							"    pm.expect(req.salary.toString()).to.include(1000);\r",
+							"    pm.expect(req.name).to.include(\"Anton\");\r",
+							"    pm.expect(req.age.toString()).to.include(24);\r",
+							"})\r",
+							"console.log(resp.family.u_salary_1_5_year);\r",
+							"var multiply = (resp.family.u_salary_1_5_year);\r",
+							"pm.test(\"u_salary_1_5_year\", function(){\r",
+							"    pm.expect(multiply.toString()).to.include(req.salary.toString()*4);\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/user_info_3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user_info_3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/object_info_3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"var resp = pm.response.json();\r",
+							"var req = pm.request.url.query.toObject();\r",
+							"console.log(req);\r",
+							"pm.test(\"name,age,salary in responde = name,age,salary in request\",function(){\r",
+							"    pm.expect(resp.name).to.include(req.name);\r",
+							"    pm.expect(resp.age.toString()).to.include(req.age.toString());\r",
+							"    pm.expect(resp.salary.toString()).to.include(req.salary.toString());\r",
+							"})\r",
+							"console.log(resp);\r",
+							"pm.test(\"dog has age\", function(){\r",
+							"    pm.expect(resp.family.pets.dog).to.have.property(\"age\");\r",
+							"})\r",
+							"pm.test(\"dog's name is Luky and his age is 4\", function(){\r",
+							"    pm.expect(resp.family.pets.dog.name).to.include(\"Luky\");\r",
+							"    pm.expect(resp.family.pets.dog.age.toString()).to.include(4);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{url}}/object_info_3?name=Anton&age=24&salary=1000",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"object_info_3"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Anton"
+						},
+						{
+							"key": "age",
+							"value": "24"
+						},
+						{
+							"key": "salary",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/object_info_4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"var resp = pm.response.json();\r",
+							"var req = pm.request.url.query.toObject();\r",
+							"console.log(resp);\r",
+							"pm.test(\"name,age,salary in responde = name,age,salary in request\",function(){\r",
+							"    pm.expect(resp.name).to.include(req.name);\r",
+							"    pm.expect(resp.age.toString()).to.include(req.age.toString());\r",
+							"    pm.expect(resp.salary.toString()).to.include(req.salary.toString());\r",
+							"})\r",
+							"pm.test(\"salary in response = salary in request\", function(){\r",
+							"    pm.expect(resp.salary[0].toString()).to.eql(req.salary);\r",
+							"    pm.expect(resp.salary[1].toString()).to.include(req.salary*2);\r",
+							"    pm.expect(resp.salary[2].toString()).to.include(req.salary*3);\r",
+							"})\r",
+							"pm.environment.set(\"name\", req.name);\r",
+							"pm.environment.set(\"age\", req.age);\r",
+							"pm.environment.set(\"salary\", req.salary);\r",
+							"for(var i=0; i<resp.salary.length;i++){\r",
+							"    console.log(resp.salary[i]);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/object_info_4?name=Anton&age=24&salary=1000",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"object_info_4"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Anton"
+						},
+						{
+							"key": "age",
+							"value": "24"
+						},
+						{
+							"key": "salary",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/user_info_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function (){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"var resp = pm.response.json();\r",
+							"var req = request.data;\r",
+							"pm.test(\"response inlude salary,person\",function(){\r",
+							"    pm.expect(resp).to.have.property(\"start_qa_salary\");\r",
+							"    pm.expect(resp).to.have.property(\"qa_salary_after_6_months\");\r",
+							"    pm.expect(resp).to.have.property(\"qa_salary_after_12_months\");\r",
+							"    pm.expect(resp).to.have.property(\"qa_salary_after_1.5_year\");\r",
+							"    pm.expect(resp).to.have.property(\"qa_salary_after_3.5_years\");\r",
+							"    pm.expect(resp).to.have.property(\"person\");\r",
+							"})\r",
+							"pm.test(\"salary in respomse= salary in request\", function(){\r",
+							"    pm.expect(resp.start_qa_salary.toString()).to.eql(req.salary);\r",
+							"    pm.expect(resp.qa_salary_after_6_months).to.eql(req.salary.toString()*2);\r",
+							"    pm.expect(resp.qa_salary_after_12_months).to.eql(req.salary.toString()*2.7);\r",
+							"    pm.expect(resp[\"qa_salary_after_1.5_year\"]).to.eql(+req.salary*3.3);\r",
+							"    pm.expect(resp[\"qa_salary_after_3.5_years\"]).to.eql(+req.salary*3.8);\r",
+							"    pm.expect(resp.person.u_salary_5_years).to.eql(+req.salary*4.2);\r",
+							"})\r",
+							"pm.test(\"salary in u_name and age in u_age = salary and age in request\",function(){\r",
+							"    pm.expect(resp.person.u_name[1]).to.eql(+req.salary);\r",
+							"     pm.expect(resp.person.u_age).to.eql(+req.age);\r",
+							"})\r",
+							"var person = [resp.person.u_age,resp.person.u_name, resp.person.u_salary_5_years];\r",
+							"for( var i = 0; i<person.length;i++ ){\r",
+							"    console.log(person[i].toString());\r",
+							"}\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{name}}",
+							"type": "text"
+						},
+						{
+							"key": "age",
+							"value": "{{age}}",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "{{salary}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://162.55.220.72:5005/user_info_2",
+					"protocol": "http",
+					"host": [
+						"162",
+						"55",
+						"220",
+						"72"
+					],
+					"port": "5005",
+					"path": [
+						"user_info_2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
